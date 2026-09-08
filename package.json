@@ -3,7 +3,7 @@
   "displayName": "RefClip",
   "icon": "images/icon.png",
   "description": "%description%",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "publisher": "Huffer342",
   "license": "MIT",
   "engines": {
