@@ -4,6 +4,8 @@
 
 复制格式可以自己定，文件路径、行号和符号名都能按需组合。
 
+https://github.com/user-attachments/assets/0c1cb1d5-b47a-4969-9a87-9ea2aa454f3d
+
 <video controls src="./docs/.assets/README.md/overview.mp4" title="RefClip 使用演示"></video>
 
 [查看使用演示视频](./docs/.assets/README.md/overview.mp4)
@@ -28,7 +30,9 @@
 
 复制后，直接粘贴到需要的地方即可。状态栏会短暂显示复制结果。
 
+<p align="center">
 <img src="./docs/.assets/README.md/status-bar.png" alt="状态栏中的 Ref 快捷复制按钮和 Refs 选项按钮" height="50" style="width: auto;">
+</p>
 
 ### 选择函数、类或代码块
 
@@ -36,7 +40,9 @@
 
 符号使用类似 VS Code 大纲的类型图标。代码块会显示折叠首行；如果可以从首行识别 `if`、`for` 等关键字，也会显示相应提示。
 
+<p align="center">
 <img src="./docs/.assets/README.md/reference-options.png" alt="引用选项面板，按范围大小列出符号和代码块" height="195" style="width: auto;">
+</p>
 
 右键 **RefClip** 子菜单还提供三个直接复制项：
 
@@ -48,7 +54,9 @@
 
 如果没找到对应的符号或代码块，插件会提示你，不会覆盖剪贴板里的内容。
 
+<p align="center">
 <img src="./docs/.assets/README.md/context-menu.png" alt="RefClip 右键菜单中的快捷复制选项" height="500" style="width: auto;">
+</p>
 
 ### 使用小灯泡
 
@@ -56,7 +64,9 @@
 
 这里用 `ƒ`、`◇`、`▱`、`{}` 等文本符号区分类型。VS Code 不允许扩展自定义小灯泡的分组标题，因此 RefClip 使用“更多操作”分组。
 
+<p align="center">
 <img src="./docs/.assets/README.md/code-actions.png" alt="小灯泡菜单中的 RefClip 引用选项" height="247" style="width: auto;">
+</p>
 
 ## 常用设置
 
