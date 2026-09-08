@@ -74,7 +74,21 @@ git push origin v0.3.0
 
 ### Marketplace
 
-当前发布流程只生成 GitHub Release，不发布 VS Code Marketplace。`publisher: refclip` 仍是本地占位身份；发布 Marketplace 前，需要在官方平台注册并确认 publisher，以及扩展名是否可用。更改 publisher 会改变扩展 ID，需同步 README 安装与设置搜索说明。
+发布者 ID 为 `Huffer342`，扩展 ID 为 `Huffer342.refclip`。正式版本标签会在 CI 通过后，分别发布到 GitHub Release 和 VS Code Marketplace；两个 job 使用同一份已测试的 VSIX。带 `-` 的预发布标签只走 GitHub Release，不上传商店。
+
+首次使用前需要配置 Microsoft Entra ID：
+
+1. 在 Azure 创建用户分配的托管标识，并添加 GitHub 联合凭据，绑定本仓库的 `marketplace` 环境。
+2. 在 GitHub 创建 `marketplace` Environment，发布规则允许 `v*` 标签。在该环境的 Variables 中设置 `AZURE_CLIENT_ID` 和 `AZURE_TENANT_ID`，分别为托管标识的客户端 ID 和租户 ID，不能使用订阅 ID。
+3. 首次手动运行 `Verify Marketplace identity` workflow 时，取消 `verify_publish_rights`，读取摘要中的 Marketplace member ID；添加成员后启用该选项再运行一次，验证发布权限。验证运行所在分支或标签必须被环境规则允许；若临时允许 `main`，完成后移除规则。
+4. 在 Marketplace 的 `Huffer342` 发布者 Members 中添加查询得到的 ID，授予 Contributor 角色。
+5. 提交发布配置后，更新版本并推送新的 `v<版本>` 标签。已有 `v0.3.0` 不会自动使用后续修改的 workflow。
+
+发布 job 使用 `azure/login` 交换 GitHub OIDC 令牌，再通过 `vsce publish --azure-credential --packagePath` 上传已测试的 VSIX，不需要 PAT。身份验证失败会使 Marketplace job 失败，但不影响独立的 GitHub Release job。处理权限后，在 Actions 中选择 **Re-run failed jobs**，避免重复执行已经发布成功的步骤。商店不允许覆盖已发布版本，修改内容后应使用新版本。
+
+README 源文件仍使用 `./` 相对链接；`vsce package` 会将包内 README 的相对链接改写为 GitHub HTTPS 地址，供商店展示。
+
+参考：[VS Code 官方发布指南](https://code.visualstudio.com/api/working-with-extensions/publishing-extension)。
 
 参考：[GitHub CLI Release 命令](https://cli.github.com/manual/gh_release_create)、[VS Code 扩展清单](https://code.visualstudio.com/api/references/extension-manifest)。
 

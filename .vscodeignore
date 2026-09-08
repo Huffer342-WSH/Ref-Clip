@@ -7,3 +7,4 @@
 !docs/.assets/README.md/**
 !docs/*.md
 !.vscode/refclip.code-workspace
+!images/icon.png

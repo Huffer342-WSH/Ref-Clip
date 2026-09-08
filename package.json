@@ -1,9 +1,10 @@
 {
   "name": "refclip",
   "displayName": "RefClip",
+  "icon": "images/icon.png",
   "description": "%description%",
   "version": "0.3.0",
-  "publisher": "refclip",
+  "publisher": "Huffer342",
   "license": "MIT",
   "engines": {
     "vscode": "^1.85.0"
@@ -23,7 +24,7 @@
     "watch": "tsc -watch -p .",
     "vscode:prepublish": "npm run compile",
     "test": "npm run compile && node --test test/*.test.cjs",
-    "package": "vsce package --out out/ --no-rewrite-relative-links",
+    "package": "vsce package --out out/",
     "localize": "node scripts/prepare-localization.cjs",
     "prepare": "npm run localize",
     "prewatch": "npm run localize",

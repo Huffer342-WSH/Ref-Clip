@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const vscode = require('vscode');
 
 exports.run = async function run() {
-  const extension = vscode.extensions.getExtension('refclip.refclip');
+  const extension = vscode.extensions.getExtension('Huffer342.refclip');
   assert.ok(extension, 'RefClip must be discovered by the real extension host');
   await extension.activate();
   const folder = vscode.workspace.workspaceFolders?.[0];

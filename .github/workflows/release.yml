@@ -61,3 +61,42 @@ jobs:
           fi
           gh release create "$RELEASE_TAG" "$package" \
             --verify-tag --title "RefClip $RELEASE_TAG" --generate-notes "${flags[@]}"
+
+  marketplace:
+    name: Publish to VS Code Marketplace
+    environment: marketplace
+    permissions:
+      contents: read
+      id-token: write
+    needs: check
+    if: ${{ !contains(github.ref_name, '-') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v8
+        with:
+          name: refclip-vsix
+          path: out
+      - name: Sign in to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          allow-no-subscriptions: true
+      - name: Publish tested VSIX
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          package="out/refclip-${RELEASE_TAG#v}.vsix"
+          test -f "$package"
+          npx --no-install vsce publish --azure-credential --packagePath "$package"
