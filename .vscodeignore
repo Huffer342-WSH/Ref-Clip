@@ -8,3 +8,5 @@
 !docs/*.md
 !.vscode/refclip.code-workspace
 !images/icon.png
+!README.zh-CN.md
+!CHANGELOG.md

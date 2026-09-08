@@ -11,15 +11,15 @@ npm ci
 npm test
 ```
 
-推荐直接打开 `.vscode/refclip.code-workspace`，工作区中已包含编译、单元测试、CT、打包和持续编译任务，以及 **RefClip: Run Extension** 和 **RefClip: Debug CT runner** 调试配置。按 F5 可启动扩展，默认在开发宿主中打开项目目录。也可以按原方式打开仓库文件夹，使用 **Run RefClip**。开发宿主打开后，通过“文件 → 打开文件夹”选择测试项目。
+推荐直接打开 `.vscode/refclip.code-workspace`，工作区中已包含编译、单元测试、CT、打包和持续编译任务，以及 **RefClip: Run Extension** 和 **RefClip: Debug CT runner** 调试配置。按 F5 可启动扩展，默认在开发宿主中打开项目目录。也可以按原方式打开仓库文件夹，使用 **Run RefClip** 。开发宿主打开后，通过“文件 → 打开文件夹”选择测试项目。
 
-若希望每次自动打开该目录，在 `.vscode/launch.json` 的 `args` 中添加测试项目绝对路径。TypeScript 由 watch task 自动编译；修改后在宿主执行 **Developer: Reload Window**。
+若希望每次自动打开该目录，在 `.vscode/launch.json` 的 `args` 中添加测试项目绝对路径。TypeScript 由 watch task 自动编译；修改后在宿主执行 **Developer: Reload Window** 。
 
 ### 打包与目录
 
 ```bash
 npm run package
-code --install-extension out/refclip-0.3.0.vsix --force
+code --install-extension out/refclip-0.3.2.vsix --force
 ```
 
 包名从 `package.json` 自动生成，输出目录固定为 `out/`，与编译后的 JavaScript 放在同一目录。`.vscodeignore` 使用允许列表，仅收录运行文件、清单、翻译、README、许可证和截图；不会把已有 VSIX 嵌入新包。
@@ -53,13 +53,13 @@ CT 会启动真实 VS Code，但通过 API 执行操作，不验证菜单渲染�
 
 ### 版本与触发方式
 
-`.github/workflows/release.yml` 由推送 `v*` 标签触发。例如包版本为 `0.3.0` 时，标签必须为 `v0.3.0`。
+`.github/workflows/release.yml` 由推送 `v*` 标签触发。例如包版本为 `0.3.2` 时，标签必须为 `v0.3.2`。
 
 更新版本时先执行 `npm version <新版本> --no-git-tag-version`，同步 `package.json` 和锁文件，再提交版本变更。检查通过后创建并推送标签，例如：
 
 ```bash
-git tag -a v0.3.0 -m "RefClip 0.3.0"
-git push origin v0.3.0
+git tag -a v0.3.2 -m "RefClip 0.3.2"
+git push github v0.3.2
 ```
 
 该命令会启动发布流程，请只对准备发布的提交执行。workflow 的流程为：
@@ -84,7 +84,7 @@ git push origin v0.3.0
 4. 在 Marketplace 的 `Huffer342` 发布者 Members 中添加查询得到的 ID，授予 Contributor 角色。
 5. 提交发布配置后，更新版本并推送新的 `v<版本>` 标签。已有 `v0.3.0` 不会自动使用后续修改的 workflow。
 
-发布 job 使用 `azure/login` 交换 GitHub OIDC 令牌，再通过 `vsce publish --azure-credential --packagePath` 上传已测试的 VSIX，不需要 PAT。身份验证失败会使 Marketplace job 失败，但不影响独立的 GitHub Release job。处理权限后，在 Actions 中选择 **Re-run failed jobs**，避免重复执行已经发布成功的步骤。商店不允许覆盖已发布版本，修改内容后应使用新版本。
+发布 job 使用 `azure/login` 交换 GitHub OIDC 令牌，再通过 `vsce publish --azure-credential --packagePath` 上传已测试的 VSIX，不需要 PAT。身份验证失败会使 Marketplace job 失败，但不影响独立的 GitHub Release job。处理权限后，在 Actions 中选择 **Re-run failed jobs** ，避免重复执行已经发布成功的步骤。商店不允许覆盖已发布版本，修改内容后应使用新版本。
 
 README 源文件仍使用 `./` 相对链接；`vsce package` 会将包内 README 的相对链接改写为 GitHub HTTPS 地址，供商店展示。
 
@@ -105,3 +105,11 @@ CT 验证真实激活、复制命令、剪贴板、符号和折叠 API、Code Ac
 翻译源文件集中放在 `l10n/manifest/`。安装依赖时的 `prepare`、编译和打包会执行 `scripts/prepare-localization.cjs`，在根目录生成 VS Code 要求的 `package.nls*.json`。根目录文件已加入 `.gitignore`，请只编辑源目录。
 
 新增语言时，在源目录增加 `package.nls.<locale>.json`，保持与英文文件相同的键，再执行 `npm test`。检查会覆盖目录中的所有语言及生成文件。打包规则自动包含生成的所有语言，不需要逐个修改清单。
+
+## 图标维护
+
+`images/icon.svg` 是图标形状的唯一源文件。圆角底板完全不透明，底板外部透明；括号和回形针使用固定路径，三种配色共享同一套形状。
+
+修改 SVG 后运行 `npm run icons`，脚本会生成 512 × 512 的 `icon-light.png`、`icon-dark.png`、`icon-mono.png`，并将亮色版写入 `images/icon.png`。配色集中定义在 `scripts/generate-icons.cjs`，不要单独修改生成的 PNG。
+
+`npm run package` 会通过 `vscode:prepublish` 自动重新生成图标。安装包只包含默认的 `images/icon.png`，SVG、备选配色和渲染工具不随插件发布；渲染依赖仅用于开发和打包，不影响插件运行。

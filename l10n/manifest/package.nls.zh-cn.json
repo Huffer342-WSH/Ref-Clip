@@ -1,5 +1,5 @@
 {
-  "description": "复制选区、符号和折叠代码块的代码引用。",
+  "description": "一键复制文件路径和行号，支持选区、函数、类和代码块范围。自定义引用格式，方便粘贴到 Codex、Claude Code 或 Markdown 笔记。",
   "command.copyReference": "快捷复制引用",
   "command.copySelection": "复制选区 / 当前行",
   "command.chooseReference": "打开引用选项…",

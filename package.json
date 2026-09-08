@@ -1,9 +1,9 @@
 {
   "name": "refclip",
-  "displayName": "RefClip",
+  "displayName": "RefClip: Copy Path & Line Numbers",
   "icon": "images/icon.png",
   "description": "%description%",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "publisher": "Huffer342",
   "license": "MIT",
   "engines": {
@@ -22,13 +22,14 @@
   "scripts": {
     "compile": "npm run localize && tsc -p .",
     "watch": "tsc -watch -p .",
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run icons && npm run compile",
     "test": "npm run compile && node --test test/*.test.cjs",
     "package": "vsce package --out out/",
     "localize": "node scripts/prepare-localization.cjs",
     "prepare": "npm run localize",
     "prewatch": "npm run localize",
-    "test:ct": "npm run compile && node test/ct/run.cjs"
+    "test:ct": "npm run compile && node test/ct/run.cjs",
+    "icons": "node scripts/generate-icons.cjs"
   },
   "contributes": {
     "commands": [
@@ -201,6 +202,7 @@
     ]
   },
   "devDependencies": {
+    "@resvg/resvg-js": "2.6.2",
     "@types/node": "^20.0.0",
     "@types/vscode": "~1.85.0",
     "@vscode/test-electron": "^3.1.0",
@@ -214,5 +216,20 @@
   "homepage": "https://github.com/Huffer342-WSH/Ref-Clip#readme",
   "bugs": {
     "url": "https://github.com/Huffer342-WSH/Ref-Clip/issues"
-  }
+  },
+  "keywords": [
+    "copy path",
+    "file path",
+    "line numbers",
+    "code reference",
+    "copy reference",
+    "relative path",
+    "markdown link",
+    "selection",
+    "symbol",
+    "code block",
+    "clipboard",
+    "codex",
+    "claude code"
+  ]
 }

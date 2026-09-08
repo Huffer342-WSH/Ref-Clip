@@ -1,5 +1,5 @@
 {
-  "description": "Copy code references from selections, symbols, and folding blocks.",
+  "description": "Copy file paths and line numbers for selections, functions, classes, and blocks. Customizable references for Codex, Claude Code, and Markdown notes.",
   "command.copyReference": "Quick Copy Reference",
   "command.copySelection": "Copy Selected Range / Current Line",
   "command.chooseReference": "Open Reference Options…",

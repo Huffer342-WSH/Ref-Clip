@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>RefClip</title>
+  <!-- Geometry is shared by all palettes. Only these three colors are replaced. -->
+  <rect x="12" y="12" width="488" height="488" rx="80" fill="#FFFCF2"/>
+  <g fill="none" stroke="#082F68" stroke-width="28" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M160 190 L94 256 L160 322"/>
+    <path d="M352 190 L418 256 L352 322"/>
+  </g>
+  <g fill="none" stroke="#00BFC1" stroke-width="28" stroke-linecap="round" transform="rotate(40 256 256)">
+    <rect x="214" y="166" width="84" height="180" rx="42"/>
+    <path d="M256 232 V280"/>
+  </g>
+</svg>

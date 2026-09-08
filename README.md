@@ -1,92 +1,110 @@
-# RefClip
+# RefClip: Copy Path & Line Numbers
 
-**在 VS Code 中，一键复制选区、函数、类或代码块的引用，直接粘贴到聊天框或开发笔记里。**
+**English** | [简体中文](./README.zh-CN.md)
 
-复制格式可以自己定，文件路径、行号和符号名都能按需组合。
+**Copy file paths with line numbers — for a selection, a whole function, or a code block.**
+
+RefClip turns code locations into references you can paste into Codex, Claude Code, issue reports, or Markdown notes. Choose absolute or relative paths and customize the output format.
+
+```text
+[user.ts createUser](./src/user.ts#L20-L35)
+```
+
+### What you can do
+
+- **Copy a path with line numbers:** select a range and click **Ref** in the status bar.
+- **Reference a whole function or class:** place the cursor inside it to copy the smallest enclosing symbol, without selecting its lines manually.
+- **Choose a larger scope:** click **Refs** to browse enclosing symbols and folding blocks, from smallest to largest.
+- **Prepare references for AI coding assistants:** use Markdown links or the included Claude Code template. RefClip copies location text to your clipboard; your assistant needs access to the referenced files.
+
+RefClip runs locally and does not send your code to a server.
 
 https://github.com/user-attachments/assets/0c1cb1d5-b47a-4969-9a87-9ea2aa454f3d
 
-<video controls src="./docs/.assets/README.md/overview.mp4" title="RefClip 使用演示"></video>
+<video controls src="./docs/.assets/README.md/overview.mp4" title="RefClip demo"></video>
 
-[查看使用演示视频](./docs/.assets/README.md/overview.mp4)
+[Watch the demo](./docs/.assets/README.md/overview.mp4)
 
-## 安装
+## Installation
 
-1. 打开 [Releases](https://github.com/Huffer342-WSH/Ref-Clip/releases)，下载所需版本的 `.vsix` 文件。
-2. 在 VS Code 扩展视图右上角的菜单中选择 **从 VSIX 安装…**。
-3. 选择下载的文件，按提示重新加载窗口。
+Install [RefClip from the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Huffer342.refclip), or run:
 
-需要 VS Code **1.85 或更新版本**。
-要识别函数、类等符号，需要启用对应的语言扩展，并确保 VS Code 大纲中能看到这些符号。
+```bash
+code --install-extension Huffer342.refclip
+```
 
-## 使用
+For manual installation, download a `.vsix` from [Releases](https://github.com/Huffer342-WSH/Ref-Clip/releases), then choose **Install from VSIX…** in the Extensions view menu.
 
-### 快捷复制
+Requires **VS Code 1.85 or later** . To recognize functions, classes, and other symbols, enable the appropriate language extension and check that the symbols appear in VS Code's Outline view.
 
-选好代码后，点击底部状态栏的 **Ref**：
+## Usage
 
-- 选中了代码：只引用选中的范围，不会自动扩大到整个函数。
-- 没有选区：引用光标所在的最小符号，比如函数或方法；找不到符号就引用当前行。
+### Quick copy
 
-复制后，直接粘贴到需要的地方即可。状态栏会短暂显示复制结果。
+Click **Ref** in the status bar:
 
-<p align="center">
-<img src="./docs/.assets/README.md/status-bar.png" alt="状态栏中的 Ref 快捷复制按钮和 Refs 选项按钮" height="50" style="width: auto;">
-</p>
+- With a selection: copy a reference to exactly that range, without expanding it to a function.
+- With only a cursor: reference the smallest enclosing symbol, such as a function or method. If no symbol is found, use the current line.
 
-### 选择函数、类或代码块
-
-点击状态栏的 **Refs** 打开引用选项面板。列表先显示当前选区或当前行，再从小到大列出包住这段代码的符号和折叠代码块。
-
-符号使用类似 VS Code 大纲的类型图标。代码块会显示折叠首行；如果可以从首行识别 `if`、`for` 等关键字，也会显示相应提示。
+Paste the result wherever you need it. The status bar briefly shows what was copied.
 
 <p align="center">
-<img src="./docs/.assets/README.md/reference-options.png" alt="引用选项面板，按范围大小列出符号和代码块" height="195" style="width: auto;">
+<img src="./docs/.assets/README.md/status-bar.png" alt="Ref quick copy and Refs options buttons in the status bar" height="50" style="width: auto;">
 </p>
 
-右键 **RefClip** 子菜单还提供三个直接复制项：
+### Choose a function, class, or block
 
-| 菜单项             | 复制目标                           |
-| ------------------ | ---------------------------------- |
-| 复制选区 / 当前行  | 当前选中的范围；无选区时为当前行   |
-| 复制最小符号       | 包含选区或光标的最小函数、类等符号 |
-| 复制最小折叠代码块 | 包含选区或光标的最小折叠范围       |
+Click **Refs** in the status bar to open the reference picker. It lists the selection or current line first, followed by enclosing symbols and folding blocks, from smallest to largest.
 
-如果没找到对应的符号或代码块，插件会提示你，不会覆盖剪贴板里的内容。
+Symbols use icons similar to VS Code's Outline. Blocks show their first line, with hints for keywords such as `if` and `for` when recognized.
 
 <p align="center">
-<img src="./docs/.assets/README.md/context-menu.png" alt="RefClip 右键菜单中的快捷复制选项" height="500" style="width: auto;">
+<img src="./docs/.assets/README.md/reference-options.png" alt="Reference picker listing enclosing symbols and blocks by size" height="195" style="width: auto;">
 </p>
 
-### 使用小灯泡
+The editor's **RefClip** context submenu also offers three direct copy actions:
 
-在编辑器中按 **Ctrl+.**，macOS 使用 **Cmd+.**，或点击小灯泡，在“更多操作”中选择以 **RefClip.** 开头的项目。
+| Action | Target |
+| --- | --- |
+| Copy selection / current line | Selected range, or the current line when nothing is selected |
+| Copy smallest symbol | Smallest symbol containing the selection or cursor |
+| Copy smallest folding block | Smallest folding range containing the selection or cursor |
 
-这里用 `ƒ`、`◇`、`▱`、`{}` 等文本符号区分类型。VS Code 不允许扩展自定义小灯泡的分组标题，因此 RefClip 使用“更多操作”分组。
+If no matching symbol or block is found, RefClip shows a message and leaves the clipboard unchanged.
 
 <p align="center">
-<img src="./docs/.assets/README.md/code-actions.png" alt="小灯泡菜单中的 RefClip 引用选项" height="247" style="width: auto;">
+<img src="./docs/.assets/README.md/context-menu.png" alt="RefClip context menu with direct copy actions" height="500" style="width: auto;">
 </p>
 
-## 常用设置
+### Use the lightbulb menu
 
-在 VS Code 设置中搜索 `@ext:refclip.refclip`，就能找到插件的全部设置。
+Press **Ctrl+.** ( **Cmd+.** on macOS), or click the lightbulb, then choose an entry beginning with **RefClip.** under **More Actions** .
 
-### 路径格式
+Text markers such as `ƒ`, `◇`, `▱`, and `{}` distinguish target types. VS Code does not let extensions define custom lightbulb group headings, so RefClip uses the built-in More Actions group.
 
-`refclip.pathStyle` 决定默认模板中的链接目标：
+<p align="center">
+<img src="./docs/.assets/README.md/code-actions.png" alt="RefClip references in the lightbulb menu" height="247" style="width: auto;">
+</p>
 
-| 设置值              | 路径基准                   | 示例                             |
-| ------------------- | -------------------------- | -------------------------------- |
-| `absolute`，默认    | 系统绝对路径               | `/home/user/project/src/user.ts` |
-| `workspaceRelative` | 当前文件所属的工作区文件夹 | `./src/user.ts`                  |
-| `fileRelative`      | 当前文件所在目录           | `./user.ts`                      |
+## Settings
 
-如果 AI 编程助手和 VS Code 能访问同一份文件，可以优先用绝对路径，减少工作目录不同带来的歧义。如果要把引用分享给别人，或在不同机器上使用，相对路径通常更方便，但双方需要约定相同的基准目录。
+Search for `@ext:Huffer342.refclip` in VS Code Settings to see all options.
 
-### 状态栏按钮设置
+### Path format
 
-下面的配置使用工作区相对路径，保留两个按钮，并将它们放在状态栏右侧：
+`refclip.pathStyle` controls the link target in the default templates:
+
+| Value | Base directory | Example |
+| --- | --- | --- |
+| `absolute` (default) | Absolute filesystem path | `/home/user/project/src/user.ts` |
+| `workspaceRelative` | Workspace folder containing the file | `./src/user.ts` |
+| `fileRelative` | Directory containing the file | `./user.ts` |
+
+Absolute paths can help avoid ambiguity when VS Code and your AI coding assistant can access the same files. Relative paths are easier to share across machines, but both sides need to agree on the base directory.
+
+### Status bar buttons
+
+This configuration uses workspace-relative paths and keeps both buttons on the right:
 
 ```json
 {
@@ -99,24 +117,24 @@ https://github.com/user-attachments/assets/0c1cb1d5-b47a-4969-9a87-9ea2aa454f3d
 }
 ```
 
-`quickCopyBehavior` 可选值：
+Options for `quickCopyBehavior`:
 
-| 设置值                    | 点击 Ref 后的行为                    |
-| ------------------------- | ------------------------------------ |
-| `selectionOrSymbol`，默认 | 优先选区，否则最小符号，再回退当前行 |
-| `selection`               | 选区或当前行                         |
-| `symbol`                  | 最小所属符号                         |
-| `block`                   | 最小所属折叠代码块                   |
+| Value | Clicking Ref copies |
+| --- | --- |
+| `selectionOrSymbol` (default) | Selection, otherwise the smallest symbol, falling back to the current line |
+| `selection` | Selection or current line |
+| `symbol` | Smallest enclosing symbol |
+| `block` | Smallest enclosing folding block |
 
-不需要的按钮可以单独关闭。`statusBarAlignment` 可设为 `left` 或 `right`；`statusBarPriority` 越大，按钮在所选一侧越靠左。位置设置立即生效，不过，其他扩展的按钮仍有可能插在两者之间。
+You can hide each button independently. Set `statusBarAlignment` to `left` or `right`; a higher `statusBarPriority` places the buttons farther left on that side. Changes take effect immediately, although other extensions may place items between the two buttons.
 
-### 自定义复制文本
+### Customize copied text
 
-插件会把文件名、行号和符号名填入模板。你可以直接使用下面的示例，也可以按自己的习惯修改。
+Templates insert file names, line numbers, and symbol names into your chosen format.
 
-#### Codex 模板（默认）
+#### Codex template (default)
 
-粘贴给 Codex 时，可以使用 RefClip 默认的 Markdown 链接模板，在文本中同时提供文件路径和行号。普通范围和符号使用不同的链接文字：
+RefClip's default Markdown links provide a file path and line numbers when pasted into Codex. Range and symbol references use different link labels:
 
 ```json
 {
@@ -126,7 +144,7 @@ https://github.com/user-attachments/assets/0c1cb1d5-b47a-4969-9a87-9ea2aa454f3d
 }
 ```
 
-复制结果示例：
+Example output:
 
 ```text
 [user.ts#L20-L35](/home/user/project/src/user.ts#L20-L35)
@@ -134,13 +152,13 @@ https://github.com/user-attachments/assets/0c1cb1d5-b47a-4969-9a87-9ea2aa454f3d
 [user.ts createUser](/home/user/project/src/user.ts#L20-L35)
 ```
 
-#### Claude Code 模板
+#### Claude Code template
 
-如果主要粘贴到 Claude Code，可以使用 `@文件路径#起始行-结束行` 格式。
+For Claude Code, you can use `@file-path#start-end`.
 
-> [Claude Code 官方 VS Code 文档](https://code.claude.com/docs/en/ide-integrations)使用的行号格式是 `#5-10`，不带 `L` 前缀。
+> The [Claude Code VS Code documentation](https://code.claude.com/docs/en/ide-integrations) uses line ranges such as `#5-10`, without an `L` prefix.
 
-将下面的配置加入 VS Code 设置：
+Add this configuration to VS Code Settings:
 
 ```json
 {
@@ -150,7 +168,7 @@ https://github.com/user-attachments/assets/0c1cb1d5-b47a-4969-9a87-9ea2aa454f3d
 }
 ```
 
-复制结果示例：
+Example output:
 
 ```text
 @./src/user.ts#20-35
@@ -158,23 +176,23 @@ https://github.com/user-attachments/assets/0c1cb1d5-b47a-4969-9a87-9ea2aa454f3d
 @./src/user.ts#20-35 (createUser)
 ```
 
-这些示例使用工作区相对路径。请让 Claude Code 使用同一个工作区目录作为基准。
+These examples use workspace-relative paths. Use the same workspace directory as the base in Claude Code.
 
-#### 模板变量
+#### Template variables
 
-| 变量                                                       | 含义                                                 |
-| ---------------------------------------------------------- | ---------------------------------------------------- |
-| `{path}`                                                   | 跟随路径格式设置的路径                               |
-| `{absolutePath}` / `{relativePath}` / `{fileRelativePath}` | 固定使用绝对路径 / 工作区相对路径 / 文件目录相对路径 |
-| `{fileName}`                                               | 文件名                                               |
-| `{startLine}` / `{endLine}`                                | 起止行号，从 1 开始                                  |
-| `{startCharacter}` / `{endCharacter}`                      | 起止字符偏移，从 0 开始，结束位置不包含在内          |
-| `{symbolName}` / `{symbolKind}`                            | 符号名称 / VS Code 符号类型编号                      |
-| `{lineRangeSuffix}`                                        | 单行为空，多行为 `-L` 加结束行号                     |
+| Variable | Meaning |
+| --- | --- |
+| `{path}` | Path using the selected path style |
+| `{absolutePath}` / `{relativePath}` / `{fileRelativePath}` | Absolute / workspace-relative / file-directory-relative path, independent of the path style setting |
+| `{fileName}` | File name |
+| `{startLine}` / `{endLine}` | One-based start and end line numbers |
+| `{startCharacter}` / `{endCharacter}` | Zero-based character offsets; the end position is exclusive |
+| `{symbolName}` / `{symbolKind}` | Symbol name / numeric VS Code symbol kind |
+| `{lineRangeSuffix}` | Empty for one line; otherwise `-L` followed by the end line |
 
-模板仅替换变量，不执行代码。缺失的可选值替换为空文本，未知变量保持原样。旧模板若写死了 `{absolutePath}`，需要改为 `{path}` 才会跟随路径设置。
+Templates only substitute variables; they do not execute code. Missing optional values become empty strings, and unknown variables remain unchanged. If an older template uses `{absolutePath}`, replace it with `{path}` to follow the path style setting.
 
-选项面板的符号提示可以单独设置，不影响复制内容：
+Customize symbol labels in the picker separately, without changing the copied text:
 
 ```json
 {
@@ -182,46 +200,46 @@ https://github.com/user-attachments/assets/0c1cb1d5-b47a-4969-9a87-9ea2aa454f3d
 }
 ```
 
-这里的 `{symbolKind}` 显示类型名称，`{symbolIcon}` 显示大纲图标，`{range}` 显示行号范围。
+In this display template, `{symbolKind}` is the type name, `{symbolIcon}` is the Outline icon, and `{range}` is the line range.
 
-## 使用说明与限制
+## Notes and limitations
 
-- 多光标时只处理主选区；选区终点位于下一行第 0 列时，不包含该行。
-- 符号引用使用当前文件中的声明信息，不会从函数调用跳转到定义。
-- Block 使用 VS Code 返回的折叠范围，可能不包含闭合大括号。手动创建的折叠范围不在该 API 的返回结果中。
-- `if`、`for` 等提示来自折叠首行，不代表完整语法解析。
+- With multiple cursors, only the primary selection is used. A selection ending at column zero of the next line excludes that line.
+- Symbol references use declarations in the current file; they do not navigate from a function call to its definition.
+- Blocks use VS Code's folding ranges, which may omit the closing brace. Manually created folding ranges are not returned by this API.
+- Keywords such as `if` and `for` are inferred from the first line of a fold, not from full syntax analysis.
 
-## 开发与贡献
+## Development and contributing
 
-### 环境
+### Environment
 
-安装 Node.js 24 和 VS Code 1.85 或更新版本，在项目根目录安装依赖：
+Install Node.js 24 and VS Code 1.85 or later, then install dependencies in the project root:
 
 ```bash
 npm ci
 ```
 
-### 开发调试
+### Debugging
 
-打开 [RefClip 工作区](./.vscode/refclip.code-workspace)，选择 **RefClip: Run Extension** 并按 **F5**。工作区已包含任务和调试配置，开发宿主窗口可以打开要测试的项目文件夹。
+Open the [RefClip workspace](./.vscode/refclip.code-workspace), choose **RefClip: Run Extension** , and press **F5** . The workspace includes build tasks and launch configurations. Open your test project folder in the Extension Development Host.
 
-修改源码后会自动编译；在开发宿主中执行 **Developer: Reload Window** 加载更新。
+Source changes compile automatically. Run **Developer: Reload Window** in the development host to load them.
 
 ```bash
-npm test          # 单元测试
-npm run test:ct   # 真实 VS Code 宿主组件测试
+npm test          # Unit tests
+npm run test:ct   # Component tests in a real VS Code host
 ```
 
-### 打包
+### Packaging
 
 ```bash
 npm run package
 ```
 
-安装包生成在 `out/refclip-<版本>.vsix`，可通过 VS Code 的“从 VSIX 安装…”命令安装。
+The package is written to `out/refclip-<version>.vsix`. Install it using VS Code's **Install from VSIX…** command.
 
-进一步说明见 [架构文档](./docs/architecture.md)和[开发与发布指南](./docs/development.md)。
+See the [architecture document](./docs/architecture.md) and [development and release guide](./docs/development.md) for more details (in Chinese).
 
-问题反馈请使用 [Issues](https://github.com/Huffer342-WSH/Ref-Clip/issues)。
+Report problems through [Issues](https://github.com/Huffer342-WSH/Ref-Clip/issues).
 
-本项目采用 [MIT 许可证](./LICENSE)。
+Licensed under the [MIT License](./LICENSE).
