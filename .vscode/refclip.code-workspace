@@ -1,0 +1,113 @@
+{
+  "folders": [
+    {
+      "name": "RefClip",
+      "path": ".."
+    }
+  ],
+  "settings": {},
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "RefClip: Compile",
+        "type": "shell",
+        "command": "npm",
+        "args": [
+          "run",
+          "compile"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:RefClip}"
+        },
+        "problemMatcher": [
+          "$tsc"
+        ]
+      },
+      {
+        "label": "RefClip: Unit tests",
+        "type": "shell",
+        "command": "npm",
+        "args": [
+          "run",
+          "test"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:RefClip}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "RefClip: CT",
+        "type": "shell",
+        "command": "npm",
+        "args": [
+          "run",
+          "test:ct"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:RefClip}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "RefClip: Package",
+        "type": "shell",
+        "command": "npm",
+        "args": [
+          "run",
+          "package"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:RefClip}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "RefClip: Watch",
+        "type": "shell",
+        "command": "npm",
+        "args": [
+          "run",
+          "watch"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:RefClip}"
+        },
+        "isBackground": true,
+        "problemMatcher": "$tsc-watch",
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      }
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "RefClip: Run Extension",
+        "type": "extensionHost",
+        "request": "launch",
+        "args": [
+          "--extensionDevelopmentPath=${workspaceFolder:RefClip}",
+          "${workspaceFolder:RefClip}"
+        ],
+        "outFiles": [
+          "${workspaceFolder:RefClip}/out/**/*.js"
+        ],
+        "preLaunchTask": "RefClip: Watch"
+      },
+      {
+        "name": "RefClip: Debug CT runner",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceFolder:RefClip}/test/ct/run.cjs",
+        "cwd": "${workspaceFolder:RefClip}",
+        "console": "integratedTerminal",
+        "preLaunchTask": "RefClip: Compile"
+      }
+    ]
+  }
+}

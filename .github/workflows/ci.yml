@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Test and package
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Component tests in VS Code
+        run: xvfb-run -a npm run test:ct
+      - name: Package VSIX
+        run: npm run package
+      - uses: actions/upload-artifact@v7
+        with:
+          name: refclip-vsix
+          path: out/*.vsix
+          if-no-files-found: error
+          retention-days: 14

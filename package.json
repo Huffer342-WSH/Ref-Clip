@@ -1,0 +1,217 @@
+{
+  "name": "refclip",
+  "displayName": "RefClip",
+  "description": "%description%",
+  "version": "0.3.0",
+  "publisher": "refclip",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "extensionKind": [
+    "workspace"
+  ],
+  "scripts": {
+    "compile": "npm run localize && tsc -p .",
+    "watch": "tsc -watch -p .",
+    "vscode:prepublish": "npm run compile",
+    "test": "npm run compile && node --test test/*.test.cjs",
+    "package": "vsce package --out out/ --no-rewrite-relative-links",
+    "localize": "node scripts/prepare-localization.cjs",
+    "prepare": "npm run localize",
+    "prewatch": "npm run localize",
+    "test:ct": "npm run compile && node test/ct/run.cjs"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "refclip.copyReference",
+        "title": "%command.copyReference%",
+        "category": "RefClip"
+      },
+      {
+        "command": "refclip.copySelection",
+        "title": "%command.copySelection%",
+        "category": "RefClip"
+      },
+      {
+        "command": "refclip.chooseReference",
+        "title": "%command.chooseReference%",
+        "category": "RefClip"
+      },
+      {
+        "command": "refclip.copySymbol",
+        "title": "%command.copySymbol%",
+        "category": "RefClip"
+      },
+      {
+        "command": "refclip.copyBlock",
+        "title": "%command.copyBlock%",
+        "category": "RefClip"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "submenu": "refclip.references",
+          "when": "resourceScheme == file || resourceScheme == vscode-remote",
+          "group": "7_refclip@1"
+        }
+      ],
+      "refclip.references": [
+        {
+          "command": "refclip.copySelection",
+          "group": "1_quick@1"
+        },
+        {
+          "command": "refclip.copySymbol",
+          "group": "1_quick@2"
+        },
+        {
+          "command": "refclip.copyBlock",
+          "group": "1_quick@3"
+        },
+        {
+          "command": "refclip.chooseReference",
+          "group": "2_options@1"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "RefClip",
+      "properties": {
+        "refclip.rangeTemplate": {
+          "type": "string",
+          "default": "[{fileName}#L{startLine}-L{endLine}]({path}#L{startLine}-L{endLine})",
+          "description": "%setting.rangeTemplate%",
+          "scope": "resource"
+        },
+        "refclip.singleLineTemplate": {
+          "type": "string",
+          "default": "[{fileName}#L{startLine}]({path}#L{startLine})",
+          "description": "%setting.singleLineTemplate%",
+          "scope": "resource"
+        },
+        "refclip.symbolTemplate": {
+          "type": "string",
+          "default": "[{fileName} {symbolName}]({path}#L{startLine}{lineRangeSuffix})",
+          "description": "%setting.symbolTemplate%",
+          "scope": "resource"
+        },
+        "refclip.pathStyle": {
+          "type": "string",
+          "default": "absolute",
+          "description": "%setting.pathStyle%",
+          "scope": "resource",
+          "enum": [
+            "absolute",
+            "workspaceRelative",
+            "fileRelative"
+          ],
+          "enumDescriptions": [
+            "%setting.pathStyle.option.0%",
+            "%setting.pathStyle.option.1%",
+            "%setting.pathStyle.option.2%"
+          ],
+          "enumItemLabels": [
+            "%setting.pathStyle.label.0%",
+            "%setting.pathStyle.label.1%",
+            "%setting.pathStyle.label.2%"
+          ]
+        },
+        "refclip.quickCopyBehavior": {
+          "type": "string",
+          "default": "selectionOrSymbol",
+          "description": "%setting.quickCopyBehavior%",
+          "scope": "resource",
+          "enum": [
+            "selectionOrSymbol",
+            "selection",
+            "symbol",
+            "block"
+          ],
+          "enumDescriptions": [
+            "%setting.quickCopyBehavior.option.0%",
+            "%setting.quickCopyBehavior.option.1%",
+            "%setting.quickCopyBehavior.option.2%",
+            "%setting.quickCopyBehavior.option.3%"
+          ],
+          "enumItemLabels": [
+            "%setting.quickCopyBehavior.label.0%",
+            "%setting.quickCopyBehavior.label.1%",
+            "%setting.quickCopyBehavior.label.2%",
+            "%setting.quickCopyBehavior.label.3%"
+          ]
+        },
+        "refclip.showQuickCopyButton": {
+          "type": "boolean",
+          "default": true,
+          "description": "%setting.showQuickCopyButton%",
+          "scope": "resource"
+        },
+        "refclip.showOptionsButton": {
+          "type": "boolean",
+          "default": true,
+          "description": "%setting.showOptionsButton%",
+          "scope": "resource"
+        },
+        "refclip.symbolOptionTemplate": {
+          "type": "string",
+          "default": "{symbolIcon} {symbolName} · {symbolKind} → {range}",
+          "description": "%setting.symbolOptionTemplate%",
+          "scope": "resource"
+        },
+        "refclip.statusBarAlignment": {
+          "type": "string",
+          "enum": [
+            "left",
+            "right"
+          ],
+          "default": "right",
+          "description": "%setting.statusBarAlignment%",
+          "scope": "resource",
+          "enumItemLabels": [
+            "%setting.statusBarAlignment.label.0%",
+            "%setting.statusBarAlignment.label.1%"
+          ]
+        },
+        "refclip.statusBarPriority": {
+          "type": "number",
+          "default": -100,
+          "minimum": -1000000,
+          "maximum": 1000000,
+          "description": "%setting.statusBarPriority%",
+          "scope": "resource"
+        }
+      }
+    },
+    "submenus": [
+      {
+        "id": "refclip.references",
+        "label": "RefClip"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "~1.85.0",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^3.0.0",
+    "typescript": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Huffer342-WSH/Ref-Clip.git"
+  },
+  "homepage": "https://github.com/Huffer342-WSH/Ref-Clip#readme",
+  "bugs": {
+    "url": "https://github.com/Huffer342-WSH/Ref-Clip/issues"
+  }
+}

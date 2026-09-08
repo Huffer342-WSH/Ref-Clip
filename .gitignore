@@ -1,0 +1,7 @@
+node_modules/
+out/
+*.vsix
+
+# Generated manifest localization and downloaded test hosts
+/package.nls*.json
+.vscode-test/

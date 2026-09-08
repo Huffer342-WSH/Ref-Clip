@@ -1,0 +1,9 @@
+**
+!package.json
+!package.nls*.json
+!README.md
+!LICENSE
+!out/*.js
+!docs/.assets/README.md/**
+!docs/*.md
+!.vscode/refclip.code-workspace

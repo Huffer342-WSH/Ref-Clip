@@ -1,0 +1,10 @@
+const assert = require('node:assert/strict');
+const manifest = require('../package.json');
+const lock = require('../package-lock.json');
+const tag = process.env.RELEASE_TAG;
+assert.ok(tag, 'RELEASE_TAG is required');
+assert.match(manifest.version, /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/, 'Unsupported release version');
+assert.equal(tag, `v${manifest.version}`, 'Tag must match package.json version');
+assert.equal(lock.version, manifest.version, 'Lockfile version must match package.json');
+assert.equal(lock.packages[''].version, manifest.version, 'Lockfile root version must match package.json');
+console.log(`Release version verified: ${tag}`);
